@@ -265,7 +265,7 @@ public class ResourcesObfuscator {
                 var content = ByteSource.wrap(AppBundleUtils.readBytes(bundleZipFile, entry, bundleModule));
                 var obfuscatedEntry = ModuleEntry.builder()
                         .setContent(content)
-                        .setPath(entry.getPath())
+                        .setPath(ZipPath.create(obfuscatedPath))
                         .build();
                 obfuscateEntries.add(obfuscatedEntry);
             } else {

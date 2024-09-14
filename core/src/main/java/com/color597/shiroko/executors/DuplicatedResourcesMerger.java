@@ -89,7 +89,9 @@ public class DuplicatedResourcesMerger {
      */
     private BundleModule mergeBundleModule(BundleModule bundleModule) throws IOException {
         File logFile = new File(outputLogLocationDir.toFile(), bundleModule.getName().getName() + SUFFIX_FILE_DUPLICATED_LOGGER);
-        checkFileDoesNotExist(logFile.toPath());
+        if (logFile.exists()) {
+            logFile.delete();
+        }
 
         Resources.ResourceTable table = bundleModule.getResourceTable().orElse(Resources.ResourceTable.getDefaultInstance());
         if (table.getPackageList().isEmpty() || bundleModule.getEntries().isEmpty()) {
@@ -154,7 +156,9 @@ public class DuplicatedResourcesMerger {
 
     private void generateDuplicatedLog(File logFile, BundleModule bundleModule) throws IOException {
         int duplicatedSize = 0;
-        checkFileDoesNotExist(logFile.toPath());
+        if (logFile.exists()) {
+            logFile.delete();
+        }
         Writer writer = new BufferedWriter(new FileWriter(logFile, false));
         writer.write("res filter path mapping:\n");
         writer.flush();

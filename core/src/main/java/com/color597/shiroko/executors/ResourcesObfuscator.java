@@ -72,8 +72,11 @@ public class ResourcesObfuscator {
 
         this.bundleZipFile = new ZipFile(bundlePath.toFile());
 
-        outputMappingPath = new File(outputLogLocationDir.toFile(), FILE_MAPPING_NAME).toPath();
-        checkFileDoesNotExist(outputMappingPath);
+        var outputMappingFile = new File(outputLogLocationDir.toFile(), FILE_MAPPING_NAME);
+        if (outputMappingFile.exists()) {
+            outputMappingFile.delete();
+        }
+        outputMappingPath = outputMappingFile.toPath();
 
         this.rawAppBundle = rawAppBundle;
         this.whiteListRules = whiteListRules;

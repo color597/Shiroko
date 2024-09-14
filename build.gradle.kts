@@ -1,15 +1,14 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.lsplugin.publish)
     alias(libs.plugins.kotlin) apply false
 }
 
 allprojects {
-    group = "org.lsposed.lspollution"
-    version = "0.2.0"
+    group = "com.color597.shiroko"
+    version = "0.3.0"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {

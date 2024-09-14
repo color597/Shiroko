@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.kotlin)
     `java-library`
@@ -21,7 +20,7 @@ dependencies {
 }
 
 publish {
-    githubRepo = "LSPosed/LSPollution"
+    githubRepo = "color597/Shiroko"
     publications {
         register<MavenPublication>(rootProject.name) {
             artifactId = project.name
@@ -31,22 +30,22 @@ publish {
             pom {
                 name.set(project.name)
                 description.set("Resource obfuscator for Android applications")
-                url.set("https://github.com/LSPosed/LSPollution")
+                url.set("ssh://git@github.com/color597/Shiroko")
                 licenses {
                     license {
                         name.set("Apache License 2.0")
-                        url.set("https://github.com/LSPosed/LSPollution/blob/master/LICENSE.txt")
+                        url.set("https://github.com/color597/Shiroko/blob/master/LICENSE.txt")
                     }
                 }
                 developers {
                     developer {
-                        name.set("LSPosed")
-                        url.set("https://lsposed.org")
+                        name.set("Col_or")
+                        url.set("https://github.com/color597")
                     }
                 }
                 scm {
-                    connection.set("scm:git:https://github.com/LSPosed/LSPollution.git")
-                    url.set("https://github.com/LSPosed/LSPollution")
+                    connection.set("scm:git:https://github.com/color597/Shiroko.git")
+                    url.set("https://github.com/color597/Shiroko")
                 }
             }
         }

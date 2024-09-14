@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     idea
     alias(libs.plugins.kotlin)
@@ -23,11 +22,11 @@ val genTask = tasks.register("generateBuildClass") {
     outputs.dir(generatedDir)
     doLast {
         val buildClassFile =
-            File(generatedJavaSourcesDir, "org/lsposed/lspollution/plugin/Build.java")
+            File(generatedJavaSourcesDir, "com/color597/shiroko/plugin/Build.java")
         buildClassFile.parentFile.mkdirs()
         buildClassFile.writeText(
             """
-            package org.lsposed.lspollution.plugin;
+            package com.color597.shiroko.plugin;
             /**
              * The type Build.
              */
@@ -68,26 +67,26 @@ idea {
 }
 
 publish {
-    githubRepo = "LSPosed/LSPollution"
-    publishPlugin("$group", rootProject.name, "org.lsposed.lspollution.plugin.LSPollutionPlugin") {
+    githubRepo = "color597/Shiroko"
+    publishPlugin("$group", rootProject.name, "com.color597.shiroko.plugin.ShirokoPlugin") {
         name.set(rootProject.name)
         description.set("Resource obfuscator for Android applications")
-        url.set("ssh://git@github.com/color597/LSPollution")
+        url.set("ssh://git@github.com/color597/Shiroko")
         licenses {
             license {
                 name.set("Apache License 2.0")
-                url.set("https://github.com/color597/LSPollution/blob/master/LICENSE.txt")
+                url.set("https://github.com/color597/Shiroko/blob/master/LICENSE.txt")
             }
         }
         developers {
             developer {
-                name.set("LSPosed")
-                url.set("https://lsposed.org")
+                name.set("Col_or")
+                url.set("https://github.com/color597")
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/color597/LSPollution.git")
-            url.set("https://github.com/color597/LSPollution")
+            connection.set("scm:git:https://github.com/color597/Shiroko.git")
+            url.set("https://github.com/color597/Shiroko")
         }
     }
 }

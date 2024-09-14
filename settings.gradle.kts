@@ -33,7 +33,7 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "lspollution"
+rootProject.name = "shiroko"
 
 include(":core", ":gradle-plugin")
 

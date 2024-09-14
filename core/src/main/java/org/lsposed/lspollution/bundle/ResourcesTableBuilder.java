@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 
 
 /**
- * 用于生成 {@link com.android.aapt.Resources.ResourceTable} 类
+ * To generate {@link com.android.aapt.Resources.ResourceTable} class
  * <p>
  * Created by YangJing on 2019/04/15 .
  * Email: yangjing.yeoh@bytedance.com
@@ -81,7 +81,7 @@ public class ResourcesTableBuilder {
         }
 
         /**
-         * 在当前的 package 中寻找 type，如果不存在则添加指 package 中
+         * From current package find type, if not exist, then add into package
          */
         @NonNull
         Resources.Type.Builder getResourceType(@NonNull Resources.Type resType) {
@@ -101,11 +101,11 @@ public class ResourcesTableBuilder {
         }
 
         /**
-         * 添加资源
+         * Add resource
          * <p>
-         * 如果 Entry 中不指定 id 的话，该资源不会被添加进 ResourceTable ，此处强行指定 id 为 0.
+         * If Entry don't specify  id , The resource will not add into ResourceTable, force specify the id as 0 here.
          *
-         * @param resType  资源类型
+         * @param resType  resource type
          * @param resEntry entry
          */
         @SuppressWarnings("UnusedReturnValue")

@@ -55,7 +55,7 @@ public class BundleStringFilter {
         if (unusedStrFile.exists()) {
             //shrink结果
             unUsedNameSet.addAll(Files.readAllLines(Paths.get(unusedStrPath)));
-            System.out.println("无用字符串 : " + unUsedNameSet.size());
+            System.out.println("Unused character: " + unUsedNameSet.size());
         }
 
         if (!unUsedNameSet.isEmpty() || !languageWhiteList.isEmpty()) {
@@ -138,7 +138,6 @@ public class BundleStringFilter {
                         resEntry = resEntry.toBuilder().clearConfigValue().addAllConfigValue(languageValue).build();
                     }
 
-                    // 删除shrink扫描出的无用字符串
                     if (resPackage.getPackageId().getId() == 127 && resType.getName().equals("string")
                             && unUsedNameSet.size() > 0 && unUsedNameSet.contains(resEntry.getName())) {
                         List<Resources.ConfigValue> proguardConfigValue = resEntry.getConfigValueList().stream()

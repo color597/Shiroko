@@ -10,7 +10,7 @@ open class ShirokoExtension {
     var enableObfuscate: Boolean = true
     var mappingFile: Path? = null
     var whiteList: Set<String>? = HashSet()
-    lateinit var obfuscatedBundleFileName: String
+    var obfuscatedBundleFileName: String = "app-obfuscated.aab"
     var mergeDuplicatedRes: Boolean = false
     var enableFilterFiles: Boolean = false
     var filterList: Set<String>? = HashSet()

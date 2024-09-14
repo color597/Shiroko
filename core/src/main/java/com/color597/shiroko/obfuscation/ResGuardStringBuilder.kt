@@ -1,122 +1,99 @@
-package com.color597.shiroko.obfuscation;
+package com.color597.shiroko.obfuscation
 
-import com.color597.shiroko.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
+import com.color597.shiroko.utils.Utils
+import java.lang.IllegalArgumentException
+import java.util.HashSet
+import java.util.regex.Pattern
 
 /**
  * 混淆字典.
- * <p>
+ *
+ *
  * Copied from: https://github.com/shwenzhang/AndResGuard
  */
-public class ResGuardStringBuilder {
+class ResGuardStringBuilder {
+    private val mReplaceStringBuffer = arrayListOf<String>()
+    private val mIsReplaced: MutableSet<Int?> = HashSet<Int?>()
+    private val mIsWhiteList: MutableSet<Int?> = HashSet<Int?>()
+    private val aToZ = (97..122).shuffled().union((65..90)).map { Char(it).toString() }.union(setOf("_")).shuffled()
+    private val numbers = (0..9).shuffled().map { it.toString() }
+    private val defaultDictionary = aToZ.union(numbers).shuffled()
 
-    private final List<String> mReplaceStringBuffer;
-    private final Set<Integer> mIsReplaced;
-    private final Set<Integer> mIsWhiteList;
-    private final String[] mAToZ = {
-            "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
-            "w", "x", "y", "z"
-    };
-    private final String[] mAToAll = {
-            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
-            "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-    };
     /**
      * 在window上面有些关键字是不能作为文件名的
      * CON, PRN, AUX, CLOCK$, NUL
      * COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9
      * LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9.
      */
-    private final HashSet<String> mFileNameBlackList;
+    private val mFileNameBlackList = hashSetOf(
+        "con", "prn", "aux", "nul"
+    )
 
-    public ResGuardStringBuilder() {
-        mFileNameBlackList = new HashSet<>();
-        mFileNameBlackList.add("con");
-        mFileNameBlackList.add("prn");
-        mFileNameBlackList.add("aux");
-        mFileNameBlackList.add("nul");
-        mReplaceStringBuffer = new ArrayList<>();
-        mIsReplaced = new HashSet<>();
-        mIsWhiteList = new HashSet<>();
-    }
+    fun reset(blacklistPatterns: HashSet<Pattern?>?) {
+        mReplaceStringBuffer.clear()
+        mIsReplaced.clear()
+        mIsWhiteList.clear()
 
-    public void reset(HashSet<Pattern> blacklistPatterns) {
-        mReplaceStringBuffer.clear();
-        mIsReplaced.clear();
-        mIsWhiteList.clear();
-
-        for (String str : mAToZ) {
-            if (!Utils.match(str, blacklistPatterns)) {
-                mReplaceStringBuffer.add(str);
+        aToZ.shuffled().forEach { first ->
+            if (!Utils.match(first, blacklistPatterns)) {
+                mReplaceStringBuffer.add(first)
             }
-        }
-
-        for (String first : mAToZ) {
-            for (String aMAToAll : mAToAll) {
-                String str = first + aMAToAll;
-                if (!Utils.match(str, blacklistPatterns)) {
-                    mReplaceStringBuffer.add(str);
+            defaultDictionary.shuffled().forEach { second ->
+                val str1 = first + second
+                if (!Utils.match(str1, blacklistPatterns)) {
+                    mReplaceStringBuffer.add(str1)
                 }
-            }
-        }
-
-        for (String first : mAToZ) {
-            for (String second : mAToAll) {
-                for (String third : mAToAll) {
-                    String str = first + second + third;
+                defaultDictionary.shuffled().forEach { third ->
+                    val str = str1 + third
                     if (!mFileNameBlackList.contains(str) && !Utils.match(str, blacklistPatterns)) {
-                        mReplaceStringBuffer.add(str);
+                        mReplaceStringBuffer.add(str)
                     }
                 }
             }
         }
+
+        mReplaceStringBuffer.shuffle()
     }
 
     // 对于某种类型用过的mapping，全部不能再用了
-    public void removeStrings(Collection<String> collection) {
-        if (collection == null) return;
-        mReplaceStringBuffer.removeAll(collection);
+    fun removeStrings(collection: MutableCollection<String?>?) {
+        if (collection == null) return
+        mReplaceStringBuffer.removeAll(collection)
     }
 
-    public boolean isReplaced(int id) {
-        return mIsReplaced.contains(id);
+    fun isReplaced(id: Int): Boolean {
+        return mIsReplaced.contains(id)
     }
 
-    public boolean isInWhiteList(int id) {
-        return mIsWhiteList.contains(id);
+    fun isInWhiteList(id: Int): Boolean {
+        return mIsWhiteList.contains(id)
     }
 
-    public void setInWhiteList(int id) {
-        mIsWhiteList.add(id);
+    fun setInWhiteList(id: Int) {
+        mIsWhiteList.add(id)
     }
 
-    public void setInReplaceList(int id) {
-        mIsReplaced.add(id);
+    fun setInReplaceList(id: Int) {
+        mIsReplaced.add(id)
     }
 
-    public String getReplaceString(Collection<String> names) throws IllegalArgumentException {
-        if (mReplaceStringBuffer.isEmpty()) {
-            throw new IllegalArgumentException("now can only obfuscation less than 35594 in a single type\n");
-        }
+    @Throws(IllegalArgumentException::class)
+    fun getReplaceString(names: MutableCollection<String>?): String {
+        require(!mReplaceStringBuffer.isEmpty()) { "now can only obfuscation less than 35594 in a single type\n" }
+
         if (names != null) {
-            for (int i = 0; i < mReplaceStringBuffer.size(); i++) {
-                String name = mReplaceStringBuffer.get(i);
+            for (i in mReplaceStringBuffer.indices) {
+                val name = mReplaceStringBuffer[i]
                 if (names.contains(name)) {
-                    continue;
+                    continue
                 }
-                return mReplaceStringBuffer.remove(i);
+                return mReplaceStringBuffer.removeAt(i)
             }
         }
-        return mReplaceStringBuffer.remove(0);
+        return mReplaceStringBuffer.removeAt(0)
     }
 
-    public String getReplaceString() {
-        return getReplaceString(null);
+    fun getReplaceString(): String? {
+        return getReplaceString(null)
     }
 }

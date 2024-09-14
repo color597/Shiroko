@@ -57,6 +57,10 @@ tasks.withType(Jar::class.java) {
     dependsOn(genTask)
 }
 
+tasks.named("kotlinSourcesJar") {
+    dependsOn(genTask)
+}
+
 idea {
     module {
         generatedSourceDirs.add(generatedJavaSourcesDir)
@@ -68,11 +72,11 @@ publish {
     publishPlugin("$group", rootProject.name, "org.lsposed.lspollution.plugin.LSPollutionPlugin") {
         name.set(rootProject.name)
         description.set("Resource obfuscator for Android applications")
-        url.set("https://github.com/LSPosed/LSPollution")
+        url.set("ssh://git@github.com/color597/LSPollution")
         licenses {
             license {
                 name.set("Apache License 2.0")
-                url.set("https://github.com/LSPosed/LSPollution/blob/master/LICENSE.txt")
+                url.set("https://github.com/color597/LSPollution/blob/master/LICENSE.txt")
             }
         }
         developers {
@@ -82,8 +86,8 @@ publish {
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/LSPosed/LSPollution.git")
-            url.set("https://github.com/LSPosed/LSPollution")
+            connection.set("scm:git:https://github.com/color597/LSPollution.git")
+            url.set("https://github.com/color597/LSPollution")
         }
     }
 }

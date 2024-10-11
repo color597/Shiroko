@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     idea
     alias(libs.plugins.kotlin)
+    alias(libs.plugins.gradle.plugin.publish)
     `java-gradle-plugin`
     `maven-publish`
     signing
@@ -22,11 +23,11 @@ val genTask = tasks.register("generateBuildClass") {
     outputs.dir(generatedDir)
     doLast {
         val buildClassFile =
-            File(generatedJavaSourcesDir, "com/color597/shiroko/plugin/Build.java")
+            File(generatedJavaSourcesDir, "io/github/color597/shiroko/plugin/Build.java")
         buildClassFile.parentFile.mkdirs()
         buildClassFile.writeText(
             """
-            package com.color597.shiroko.plugin;
+            package io.github.color597.shiroko.plugin;
             /**
              * The type Build.
              */
@@ -66,27 +67,41 @@ idea {
     }
 }
 
-publish {
-    githubRepo = "color597/Shiroko"
-    publishPlugin("$group", rootProject.name, "com.color597.shiroko.plugin.ShirokoPlugin") {
-        name.set(rootProject.name)
-        description.set("Resource obfuscator for Android applications")
-        url.set("ssh://git@github.com/color597/Shiroko")
-        licenses {
-            license {
-                name.set("Apache License 2.0")
-                url.set("https://github.com/color597/Shiroko/blob/master/LICENSE.txt")
-            }
-        }
-        developers {
-            developer {
-                name.set("Col_or")
-                url.set("https://github.com/color597")
-            }
-        }
-        scm {
-            connection.set("scm:git:https://github.com/color597/Shiroko.git")
-            url.set("https://github.com/color597/Shiroko")
+gradlePlugin {
+    website.set("https://github.com/color597/Shiroko")
+    vcsUrl.set("https://github.com/color597/Shiroko")
+    plugins {
+        create("shiroko") {
+            id = group.toString()
+            implementationClass = "io.github.color597.shiroko.plugin.ShirokoPlugin"
+            displayName = rootProject.name
+            description = "Resource obfuscator for Android AAB"
+            tags.set(listOf("android-bundle"))
         }
     }
 }
+
+//publish {
+//    githubRepo = "color597/Shiroko"
+//    publishPlugin("$group", rootProject.name, "com.color597.shiroko.plugin.ShirokoPlugin") {
+//        name.set(rootProject.name)
+//        description.set("Resource obfuscator for Android applications")
+//        url.set("ssh://git@github.com/color597/Shiroko")
+//        licenses {
+//            license {
+//                name.set("Apache License 2.0")
+//                url.set("https://github.com/color597/Shiroko/blob/master/LICENSE.txt")
+//            }
+//        }
+//        developers {
+//            developer {
+//                name.set("Col_or")
+//                url.set("https://github.com/color597")
+//            }
+//        }
+//        scm {
+//            connection.set("scm:git:https://github.com/color597/Shiroko.git")
+//            url.set("https://github.com/color597/Shiroko")
+//        }
+//    }
+//}

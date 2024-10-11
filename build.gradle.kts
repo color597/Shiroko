@@ -7,7 +7,7 @@ plugins {
 }
 
 allprojects {
-    group = "com.color597.shiroko"
+    group = "io.github.color597.shiroko"
     version = "0.3.0"
 
     plugins.withType(JavaPlugin::class.java) {
